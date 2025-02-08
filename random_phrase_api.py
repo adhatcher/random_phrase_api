@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, Response
 import random
-import time
+import time, os
 from prometheus_client import Counter, Histogram, generate_latest, REGISTRY
 
 app = Flask(__name__)
+
+API_PORT = os.getenv("API_PORT", "6061")
 
 # Read phrases from the file and store them in memory
 with open('phrases.txt', 'r') as file:
@@ -40,4 +42,4 @@ def get_random_phrase():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=6060)
+    app.run(debug=True, host='0.0.0.0', port=API_PORT)

@@ -16,8 +16,14 @@ RUN poetry install --only main --no-root
 # Copy the rest of the application code
 COPY . .
 
-# Expose port 6060 for the Flask API
-EXPOSE 6060
+# Expose port 6061 for the Flask API
+EXPOSE 6061
+
+#COPY entrypoint.sh /app/entrypoint.sh
+
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 # Command to run the application
 CMD ["poetry", "run", "python", "random_phrase_api.py"]
