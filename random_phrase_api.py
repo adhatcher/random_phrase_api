@@ -93,5 +93,13 @@ def get_random_phrase():
         logging.error(f"Error in /random_phrase: {str(e)}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
+@app.route('/backend/random_phrase', methods=['GET'])
+def backend_random_phrase():
+    return get_random_phrase()
+
+@app.route('/backend/metrics', methods=['GET'])
+def backend_metrics():
+    return metrics()
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=API_PORT)
