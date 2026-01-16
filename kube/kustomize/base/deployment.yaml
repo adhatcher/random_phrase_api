@@ -22,7 +22,7 @@ spec:
             memory: "128Mi"
           requests:
             memory: "64Mi"
-            cpu: "50m"
+            cpu: "5m"
         ports:
         - containerPort: 7070
         env:

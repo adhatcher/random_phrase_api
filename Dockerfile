@@ -1,6 +1,9 @@
 # Use the official Python image as a base image
 FROM python:3.12-slim
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 # Set the working directory in the container
 WORKDIR /app
 

@@ -69,6 +69,12 @@ tasks:
       - kubectl apply -k kube/kustomize/base -n phrases
     silent: false
 
+  open-app:
+    desc: Open the backend application in the browser
+    cmds:
+      - open "http://phrases.local/backend/random_phrase"
+    silent: false
+    
   clean-app:
     desc: Delete the kustomize manifests from the kind cluster
     cmds:
@@ -82,7 +88,6 @@ tasks:
     cmds:
       - task: clean-app
       - task: clean-image
-      - task: clean-namespace
     silent: false
 
   deploy:
