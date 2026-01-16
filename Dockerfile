@@ -16,8 +16,8 @@ RUN poetry install --only main --no-root
 # Copy the rest of the application code
 COPY . .
 
-# Expose port 6061 for the Flask API
-EXPOSE 6061
+# Expose port 7070 for the Flask API
+EXPOSE 7070
 
 #COPY entrypoint.sh /app/entrypoint.sh
 

@@ -16,7 +16,7 @@ FAILED_REQUESTS = Counter('failed_requests', 'Number of failed requests')
 
 
 
-API_PORT = os.getenv("API_PORT", "6061")
+API_PORT = os.getenv("API_PORT", "7070")
 
 log_dir = "/logs"
 os.makedirs(log_dir, exist_ok=True)
