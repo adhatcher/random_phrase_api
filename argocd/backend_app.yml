@@ -31,3 +31,4 @@ stringData:
   type: git
   url: 'https://github.com/adhatcher/random_phrase_api'
   name: backend-app-repo
+  project: default
