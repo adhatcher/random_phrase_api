@@ -1,32 +1,33 @@
-# Use the official Python image as a base image
-FROM python:3.12-slim
+# Build deps and venv in a separate stage to keep runtime small
+FROM python:3.12-slim AS builder
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
-# Set the working directory in the container
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
+
+RUN python -m venv "${VIRTUAL_ENV}" \
+    && pip install --no-cache-dir "poetry==1.8.3" "poetry-plugin-export==1.7.1"
+
 WORKDIR /app
-
-# Copy the pyproject.toml and poetry.lock files
 COPY pyproject.toml poetry.lock ./
 
-# Install Poetry
-RUN pip install --no-cache-dir poetry
+RUN poetry export --only main --format requirements.txt --output requirements.txt --without-hashes \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Install the required packages without dev dependencies
-RUN poetry install --only main --no-root
+FROM python:3.12-slim
 
-# Copy the rest of the application code
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+COPY --from=builder /opt/venv /opt/venv
 COPY . .
-
-# Expose port 7070 for the Flask API
-EXPOSE 7070
-
-#COPY entrypoint.sh /app/entrypoint.sh
 
 RUN chmod +x /app/entrypoint.sh
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+EXPOSE 7070
 
-# Command to run the application
-CMD ["poetry", "run", "python", "random_phrase_api.py"]
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["python", "random_phrase_api.py"]
