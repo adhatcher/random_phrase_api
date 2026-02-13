@@ -1,6 +1,6 @@
 # Random Phrase API
 
-Generates random phrases from the phrases.txt file for the frontend_api.py app.
+Generates random phrases from the phrases.txt file for the backend_api.py app.
 
 ## Requirements
 
@@ -90,3 +90,20 @@ backend   ["phrases.local"]   8m1s
 ```
 
 Open [http://phrases.local/backend/random_phrase](http://phrases.local/backend/random_phrase.)
+
+
+
+## KubeVela and ArgoCD
+
+Create the argocd project.
+
+```bash
+kubectl apply -f deploy/argocd/project.yaml
+kubectl apply -f deploy/argocd/project.yaml
+```
+
+Apply KubeVela project
+
+```bash
+kubectl apply -k deploy/kubevela/
+```

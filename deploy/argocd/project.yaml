@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: phrases
+  namespace: argocd
+spec:
+  description: backend API deployment project
+  sourceRepos:
+    - https://github.com/adhatcher/random_phrase_api.git
+  destinations:
+    - namespace: phrases
+      server: https://kubernetes.default.svc
+    - namespace: vela-system
+      server: https://kubernetes.default.svc
+    - namespace: phrases
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

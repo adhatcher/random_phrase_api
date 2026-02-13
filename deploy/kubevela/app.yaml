@@ -1,0 +1,68 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: backend
+  namespace: phrases
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  components:
+    - name: backend
+      type: webservice
+      properties:
+        labels:
+          app: backend
+          project: phrases
+        image: ghcr.io/adhatcher/backend:v1
+        imagePullPolicy: IfNotPresent
+        port: 7070
+        env:
+          - name: ENVIRONMENT
+            value: development
+          - name: FLASK_HOST
+            value: "0.0.0.0"
+          - name: FLASK_PORT
+            value: "7070"
+          - name: API_HOST
+            value: "backend"
+          - name: API_PORT
+            value: "7070"
+      traits:
+        - type: resource
+          properties:
+            limits:
+              memory: "128Mi"
+            requests:
+              cpu: "5m"
+              memory: "64Mi"
+        - type: hpa
+          properties:
+            min: 2
+            max: 4
+            cpu:
+              type: AverageValue
+              value: "8m"
+            mem:
+              type: AverageValue
+              value: "100000000"
+        - type: expose
+          properties:
+            type: ClusterIP
+            matchLabels:
+              app: backend
+            ports:
+              - name: http
+                port: 7070
+                protocol: TCP
+        - type: httproute
+          properties:
+            routeName: backend
+            hostname: phrases.local
+            path: /backend
+            gateway:
+              name: gateway
+              namespace: gateway
+              sectionName: http
+            service:
+              name: backend
+              port: 7070
