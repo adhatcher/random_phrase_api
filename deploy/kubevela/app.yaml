@@ -35,16 +35,6 @@ spec:
             requests:
               cpu: "5m"
               memory: "64Mi"
-        - type: hpa
-          properties:
-            min: 2
-            max: 4
-            cpu:
-              type: AverageValue
-              value: "8m"
-            mem:
-              type: AverageValue
-              value: "100000000"
         - type: expose
           properties:
             type: ClusterIP
@@ -66,3 +56,32 @@ spec:
             service:
               name: backend
               port: 7070
+    - name: backend-hpa
+      type: k8s-objects
+      properties:
+        objects:
+          - apiVersion: autoscaling/v2
+            kind: HorizontalPodAutoscaler
+            metadata:
+              name: backend-hpa
+              namespace: phrases
+            spec:
+              scaleTargetRef:
+                apiVersion: apps/v1
+                kind: Deployment
+                name: backend
+              minReplicas: 2
+              maxReplicas: 4
+              metrics:
+                - type: Resource
+                  resource:
+                    name: cpu
+                    target:
+                      type: AverageValue
+                      averageValue: 8m
+                - type: Resource
+                  resource:
+                    name: memory
+                    target:
+                      type: AverageValue
+                      averageValue: 100Mi

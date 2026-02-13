@@ -7,6 +7,8 @@ spec:
   description: backend API deployment project
   sourceRepos:
     - https://github.com/adhatcher/random_phrase_api.git
+    - https://github.com/adhatcher/random_phrase_api
+    - https://github.com/adhatcher/random_phrase_api/
   destinations:
     - namespace: phrases
       server: https://kubernetes.default.svc
