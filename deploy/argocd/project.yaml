@@ -9,6 +9,7 @@ spec:
     - https://github.com/adhatcher/random_phrase_api.git
     - https://github.com/adhatcher/random_phrase_api
     - https://github.com/adhatcher/random_phrase_api/
+    - https://github.com/adhatcher/frontend_api.git
   destinations:
     - namespace: phrases
       server: https://kubernetes.default.svc
