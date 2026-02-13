@@ -4,10 +4,10 @@ metadata:
   name: backend-api
   namespace: argocd
 spec:
-  project: backend-api
+  project: phrases
   
   source:
-    repoURL: https://github.com/adhatcher/randoom_phrase_api.git
+    repoURL: https://github.com/adhatcher/random_phrase_api.git
     targetRevision: main
     path: deploy/kubevela
 
