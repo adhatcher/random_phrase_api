@@ -50,9 +50,9 @@ spec:
             hostname: backend.zeus
             path: /backend
             gateway:
-              name: gateway
-              namespace: gateway
-              sectionName: http
+              name: zeus-gw
+              namespace: envoy-gateway-system
+              sectionName: https
             service:
               name: backend
               port: 7070

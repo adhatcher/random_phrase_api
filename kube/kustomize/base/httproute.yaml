@@ -5,9 +5,9 @@ metadata:
   namespace: ns_name
 spec:
   parentRefs:
-    - name: gateway
-      sectionName: http
-      namespace: gateway
+    - name: zeus-gw
+      sectionName: https
+      namespace: envoy-gateway-system
   hostnames:
     - "backend.zeus"
   rules:
