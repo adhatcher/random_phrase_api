@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backend-api
+  namespace: argocd
+spec:
+  project: backend-api
+  
+  source:
+    repoURL: https://github.com/adhatcher/randoom_phrase_api.git
+    targetRevision: main
+    path: deploy/kubevela
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: phrases
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  # Optional: Set up webhook or polling for faster detection
+  revisionHistoryLimit: 10

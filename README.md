@@ -1,6 +1,6 @@
 # Random Phrase API
 
-Generates random phrases from the phrases.txt file for the frontend_api.py app.
+Generates random phrases from the phrases.txt file for the backend_api.py app.
 
 ## Requirements
 
