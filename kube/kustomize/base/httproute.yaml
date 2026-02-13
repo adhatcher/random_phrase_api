@@ -9,7 +9,7 @@ spec:
       sectionName: http
       namespace: gateway
   hostnames:
-    - "phrases.local"
+    - "backend.zeus"
   rules:
     - matches:
       - path:

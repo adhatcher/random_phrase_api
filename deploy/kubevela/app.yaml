@@ -47,7 +47,7 @@ spec:
         - type: httproute
           properties:
             routeName: backend
-            hostname: phrases.local
+            hostname: backend.zeus
             path: /backend
             gateway:
               name: gateway
