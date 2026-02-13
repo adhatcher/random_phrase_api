@@ -13,10 +13,12 @@ spec:
         labels:
           app: backend
           project: phrases
-        image: backend:v1
-        imagePullPolicy: Never
+        image: ghcr.io/adhatcher/backend:v1
+        imagePullPolicy: IfNotPresent
         port: 7070
         env:
+          - name: ENVIRONMENT
+            value: development
           - name: FLASK_HOST
             value: "0.0.0.0"
           - name: FLASK_PORT
