@@ -62,6 +62,14 @@ except Exception as e:
 
 
 
+@app.route('/healthz', methods=['GET'])
+def healthz():
+    return jsonify({'status': 'ok'}), 200
+
+@app.route('/backend/healthz', methods=['GET'])
+def backend_healthz():
+    return healthz()
+
 @app.route('/metrics', methods=['GET'])
 def metrics():
     return Response(generate_latest(REGISTRY), mimetype='text/plain')

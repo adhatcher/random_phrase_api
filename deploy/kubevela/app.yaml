@@ -18,7 +18,7 @@ spec:
         port: 7070
         readinessProbe:
           httpGet:
-            path: /backend/random_phrase
+            path: /healthz
             port: 7070
           initialDelaySeconds: 5
           periodSeconds: 10
@@ -26,7 +26,7 @@ spec:
           failureThreshold: 3
         livenessProbe:
           httpGet:
-            path: /backend/random_phrase
+            path: /healthz
             port: 7070
           initialDelaySeconds: 15
           periodSeconds: 20
@@ -49,7 +49,7 @@ spec:
             limits:
               memory: "128Mi"
             requests:
-              cpu: "5m"
+              cpu: "8m"
               memory: "64Mi"
         - type: expose
           properties:
@@ -94,7 +94,7 @@ spec:
                     name: cpu
                     target:
                       type: AverageValue
-                      averageValue: 8m
+                      averageValue: 10m
                 - type: Resource
                   resource:
                     name: memory
