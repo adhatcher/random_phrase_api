@@ -23,7 +23,10 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 COPY --from=builder /opt/venv /opt/venv
-COPY . .
+COPY entrypoint.sh /app/entrypoint.sh
+COPY random_phrase_api.py /app/random_phrase_api.py
+COPY phrases.txt /app/phrases.txt
+COPY templates /app/templates
 
 RUN chmod +x /app/entrypoint.sh
 
