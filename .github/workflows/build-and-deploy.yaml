@@ -50,7 +50,15 @@ jobs:
 
       - name: Update deployed image tag
         run: |
-          sed -i "s|image: ghcr.io/adhatcher/random_phrase_api:.*|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}|g" deploy/kubevela/app.yaml
+          IMAGE_REF="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          awk -v image="$IMAGE_REF" '
+            !done && $0 ~ /^[[:space:]]*image:[[:space:]]*/ {
+              sub(/image:[[:space:]]*.*/, "image: " image)
+              done=1
+            }
+            { print }
+          ' deploy/kubevela/app.yaml > deploy/kubevela/app.yaml.tmp
+          mv deploy/kubevela/app.yaml.tmp deploy/kubevela/app.yaml
           git add deploy/kubevela/app.yaml
           git config user.name "github-actions[bot]"
           git config user.email "41898752+github-actions[bot]@users.noreply.github.com"
