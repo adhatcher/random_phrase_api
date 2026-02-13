@@ -18,7 +18,7 @@ spec:
         port: 7070
         env:
           - name: ENVIRONMENT
-            value: development
+            value: production
           - name: FLASK_HOST
             value: "0.0.0.0"
           - name: FLASK_PORT
