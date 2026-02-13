@@ -16,6 +16,22 @@ spec:
         image: ghcr.io/adhatcher/random_phrase_api:357ae55046367389cdb01e413f10764c8aceb32a
         imagePullPolicy: IfNotPresent
         port: 7070
+        readinessProbe:
+          httpGet:
+            path: /backend/random_phrase
+            port: 7070
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /backend/random_phrase
+            port: 7070
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          timeoutSeconds: 2
+          failureThreshold: 3
         env:
           - name: ENVIRONMENT
             value: production
