@@ -13,7 +13,7 @@ spec:
         labels:
           app: backend
           project: phrases
-        image: ghcr.io/adhatcher/random_phrase_api:833b963d536855e48a4b724c166beb4f00ecc56b
+        image: ghcr.io/adhatcher/random_phrase_api:cf2286f9553cc3292cf8edc74e3b4402ef82a921
         imagePullPolicy: IfNotPresent
         port: 7070
         readinessProbe:
