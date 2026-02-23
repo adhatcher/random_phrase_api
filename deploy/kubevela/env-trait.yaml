@@ -1,0 +1,31 @@
+apiVersion: core.oam.dev/v1beta1
+kind: TraitDefinition
+metadata:
+  name: env
+  annotations:
+    definition.oam.dev/description: "Patch environment variables onto the workload container"
+spec:
+  appliesToWorkloads:
+    - deployments.apps
+  podDisruptive: true
+  schematic:
+    cue:
+      template: |
+        patch: {
+          spec: template: spec: {
+            // +patchKey=name
+            containers: [{
+              name: context.name
+              if parameter.env != _|_ {
+                env: parameter.env
+              }
+            }]
+          }
+        }
+
+        parameter: {
+          env: [...{
+            name:  string
+            value: string
+          }]
+        }

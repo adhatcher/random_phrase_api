@@ -1,0 +1,36 @@
+apiVersion: core.oam.dev/v1beta1
+kind: TraitDefinition
+metadata:
+  name: probe
+  annotations:
+    definition.oam.dev/description: "Patch liveness/readiness/startup probes onto the workload container"
+spec:
+  appliesToWorkloads:
+    - deployments.apps
+  podDisruptive: true
+  schematic:
+    cue:
+      template: |
+        patch: {
+          spec: template: spec: {
+            // +patchKey=name
+            containers: [{
+              name: context.name
+              if parameter.readinessProbe != _|_ {
+                readinessProbe: parameter.readinessProbe
+              }
+              if parameter.livenessProbe != _|_ {
+                livenessProbe: parameter.livenessProbe
+              }
+              if parameter.startupProbe != _|_ {
+                startupProbe: parameter.startupProbe
+              }
+            }]
+          }
+        }
+
+        parameter: {
+          readinessProbe?: {...}
+          livenessProbe?: {...}
+          startupProbe?: {...}
+        }
