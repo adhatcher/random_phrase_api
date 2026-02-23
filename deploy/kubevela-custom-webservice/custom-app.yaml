@@ -16,6 +16,17 @@ spec:
         image: ghcr.io/adhatcher/random_phrase_api:e56c6ca7a716595514c8dc506b186271a33a5118
         port: 7070
         probePath: /healthz
+        env:
+          - name: ENVIRONMENT
+            value: production
+          - name: FLASK_HOST
+            value: "0.0.0.0"
+          - name: FLASK_PORT
+            value: "7070"
+          - name: API_HOST
+            value: "backend"
+          - name: API_PORT
+            value: "7070"
       traits:
         - type: httproute
           properties:

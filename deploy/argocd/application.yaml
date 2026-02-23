@@ -9,8 +9,7 @@ spec:
   source:
     repoURL: https://github.com/adhatcher/random_phrase_api.git
     targetRevision: main
-    path: deploy/kubevela-custom-webservice
-
+    path: deploy/kubevela
   destination:
     server: https://kubernetes.default.svc
     namespace: phrases
