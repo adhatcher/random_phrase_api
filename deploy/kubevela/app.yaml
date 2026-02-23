@@ -19,17 +19,19 @@ spec:
       traits:
         - type: env
           properties:
-            env:
-              - name: ENVIRONMENT
-                value: production
-              - name: FLASK_HOST
-                value: "0.0.0.0"
-              - name: FLASK_PORT
-                value: "7070"
-              - name: API_HOST
-                value: "backend"
-              - name: API_PORT
-                value: "7070"
+            containers:
+              - containerName: backend
+                env:
+                  - name: ENVIRONMENT
+                    value: production
+                  - name: FLASK_HOST
+                    value: "0.0.0.0"
+                  - name: FLASK_PORT
+                    value: "7070"
+                  - name: API_HOST
+                    value: "backend"
+                  - name: API_PORT
+                    value: "7070"
         - type: probe
           properties:
             readinessProbe:
