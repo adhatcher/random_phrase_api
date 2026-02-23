@@ -15,23 +15,19 @@ spec:
           project: phrases
         image: ghcr.io/adhatcher/random_phrase_api:cbf03582c0077e0f13e7b7db7187882222a2adbd
         imagePullPolicy: IfNotPresent
+        env:
+          - name: ENVIRONMENT
+            value: production
+          - name: FLASK_HOST
+            value: "0.0.0.0"
+          - name: FLASK_PORT
+            value: "7070"
+          - name: API_HOST
+            value: "backend"
+          - name: API_PORT
+            value: "7070"
         port: 7070
       traits:
-        - type: env
-          properties:
-            containers:
-              - containerName: backend
-                env:
-                  - name: ENVIRONMENT
-                    value: production
-                  - name: FLASK_HOST
-                    value: "0.0.0.0"
-                  - name: FLASK_PORT
-                    value: "7070"
-                  - name: API_HOST
-                    value: "backend"
-                  - name: API_PORT
-                    value: "7070"
         - type: probe
           properties:
             readinessProbe:
