@@ -13,7 +13,7 @@ spec:
         labels:
           app: backend
           project: phrases
-        image: ghcr.io/adhatcher/random_phrase_api:2139ad3cc8f552d14befee2f0573a29ce673b945
+        image: ghcr.io/adhatcher/random_phrase_api:cd65c7e01c137104fde02ee84c9f65e502a63d51
         imagePullPolicy: IfNotPresent
         env:
           - name: ENVIRONMENT
