@@ -1,4 +1,5 @@
 POETRY_VERSION=2.0.0
+POETRY ?= $(shell if [ -x /opt/homebrew/bin/poetry ]; then echo /opt/homebrew/bin/poetry; elif [ -x /usr/local/bin/poetry ]; then echo /usr/local/bin/poetry; else command -v poetry; fi)
 
 .PHONY: all
 .DEFAULT_GOAL=help
@@ -8,6 +9,7 @@ clean:
 	rm -rf __pycache__ 
 	rm -rf .pytest_cache 
 	rm -rf .coverage 
+	rm -rf reports
 	rm -rf dist 
 	rm -rf requirements.txt
 	rm -rf build 
@@ -17,13 +19,12 @@ distclean: clean
 	- rm -rf .venv
 
 .PHONY: build
-build: build
-	python3 -m poetry install
-	python3 -m poetry build
+build:
+	$(POETRY) install
 
 .PHONY: update
 update:
-	python3 -m poetry update
+	$(POETRY) update
 
 .PHONY: precommit
 precommit:
@@ -33,19 +34,28 @@ precommit:
 
 .PHONY: test
 test:
-	python3 -m poetry run pytest
+	$(POETRY) run pytest
 
 .PHONY: cover
 cover:
-	poetry run pytest --cov src/ --junitxml reports/xunit.xml \
-	--cov-report xml:reports/coverage.xml --cov-report term-missing
+	mkdir -p reports
+	$(POETRY) run pytest --junitxml reports/xunit.xml
+
+.PHONY: coverage-check
+coverage-check:
+	mkdir -p reports
+	$(POETRY) run pytest --cov-fail-under=90
 
 .PHONY: package
 package: ## Create deployable whl package for python3 project
-	python3 -m poetry build --format=wheel
+	@if grep -q 'package-mode = false' pyproject.toml; then \
+		echo "Skipping package build: package-mode is false in pyproject.toml"; \
+	else \
+		$(POETRY) build --format=wheel; \
+	fi
 
 .PHONY: ci
-ci: clean build test cover package ## Runs clan, build and package
+ci: clean build test coverage-check cover package ## Runs clean, build, test, coverage checks and package
 
 .PHONY: format
 format: ## Formats the python3 files

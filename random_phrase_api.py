@@ -18,28 +18,38 @@ FAILED_REQUESTS = Counter('failed_requests', 'Number of failed requests')
 
 API_PORT = os.getenv("API_PORT", "7070")
 
-log_dir = "/logs"
-os.makedirs(log_dir, exist_ok=True)
-
-# Configure log file handler
-log_file = os.path.join(log_dir, "random_phrase_app.log")
-handler = TimedRotatingFileHandler(log_file, when="D", interval=1, backupCount=4)
-handler.setLevel(logging.INFO)
-
-# Set log format
-formatter = logging.Formatter(
+LOG_DIR = os.getenv("LOG_DIR", "/logs")
+LOG_FORMATTER = logging.Formatter(
     "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
 )
-handler.setFormatter(formatter)
 
-# Attach handler to Flask app logger
-app.logger.addHandler(handler)
+
+def _build_log_handler():
+    for log_dir in (LOG_DIR, "./logs"):
+        try:
+            os.makedirs(log_dir, exist_ok=True)
+            log_file = os.path.join(log_dir, "random_phrase_app.log")
+            file_handler = TimedRotatingFileHandler(
+                log_file, when="D", interval=1, backupCount=4
+            )
+            file_handler.setLevel(logging.INFO)
+            file_handler.setFormatter(LOG_FORMATTER)
+            return file_handler
+        except OSError:
+            continue
+    return None
+
+
+handler = _build_log_handler()
 app.logger.setLevel(logging.INFO)
-
-# Redirect Werkzeug logs (Flask's built-in server logs)
 werkzeug_logger = logging.getLogger("werkzeug")
 werkzeug_logger.setLevel(logging.DEBUG)
-werkzeug_logger.addHandler(handler)
+
+if handler is not None:
+    app.logger.addHandler(handler)
+    werkzeug_logger.addHandler(handler)
+else:
+    app.logger.warning("File logging disabled: unable to initialize log directory")
 
 # Read phrases from the file and store them in memory
 phrases = []
