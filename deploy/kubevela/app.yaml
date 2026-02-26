@@ -51,8 +51,8 @@ spec:
             limits:
               memory: "128Mi"
             requests:
-              cpu: "8m"
-              memory: "64Mi"
+              cpu: "10m"
+              memory: "80Mi"
         - type: expose
           properties:
             type: ClusterIP
