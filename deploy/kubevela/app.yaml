@@ -49,10 +49,10 @@ spec:
         - type: resource
           properties:
             limits:
-              memory: "128Mi"
+              memory: "256Mi"
             requests:
               cpu: "10m"
-              memory: "80Mi"
+              memory: "100Mi"
         - type: expose
           properties:
             type: ClusterIP
