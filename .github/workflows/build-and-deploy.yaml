@@ -94,4 +94,13 @@ jobs:
             exit 0
           fi
           git commit -m "chore: update image tag to ${{ steps.tag.outputs.new_tag }}"
-          git push origin HEAD:${{ github.ref_name }}
+          BRANCH="${{ github.ref_name }}"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$BRANCH" && git push origin HEAD:"$BRANCH" && break
+            if [ "$attempt" -eq 3 ]; then
+              echo "Failed to push after 3 attempts"
+              exit 1
+            fi
+            echo "Push failed due to remote updates, retrying ($attempt/3)..."
+            sleep 2
+          done
